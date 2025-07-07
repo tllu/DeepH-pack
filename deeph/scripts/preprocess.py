@@ -1,6 +1,7 @@
 import os
 import subprocess as sp
 import time
+from copy import copy
 
 import numpy as np
 import argparse
@@ -113,6 +114,7 @@ def main():
 
     os.chdir(raw_dir)
     relpath_list = []
+    writepath_list = []
     abspath_list = []
     for root, dirs, files in os.walk('./'):
         if (interface == 'openmx' and 'openmx.scfout' in files) or (
@@ -121,8 +123,11 @@ def main():
             interface == 'aims' and 'NoTB.dat' in files):
             
             if root.count('/') > 1:
-                root = root.split('/')[1]
+                writepath = root.split('/')[1]
+            else:
+                writepath = copy(root)
             relpath_list.append(root)
+            writepath_list.append(writepath)
             
             abspath_list.append(os.path.abspath(root))
 
@@ -143,10 +148,11 @@ def main():
               f'[{time.strftime("%H:%M:%S", time.localtime(time_cost))}<{time_estimate}]...', end='')
         abspath = abspath_list[index]
         relpath = relpath_list[index]
-        os.makedirs(relpath, exist_ok=True)
+        writepath = writepath_list[index]
+        os.makedirs(writepath, exist_ok=True)
         cmd = make_cmd(
             abspath,
-            os.path.abspath(relpath),
+            os.path.abspath(writepath),
             target=target,
             interface=interface,
             get_S=get_S,
