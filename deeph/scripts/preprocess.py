@@ -168,7 +168,7 @@ def main():
 
         if interface == 'abacus':
             print("Output subdirectories:", "OUT." + abacus_suffix)
-            abacus_parse(abspath, os.path.abspath(relpath), 'OUT.' + abacus_suffix)
+            abacus_parse(abspath, os.path.abspath(writepath), 'OUT.' + abacus_suffix)
         elif interface == 'siesta':
             siesta_parse(abspath, os.path.abspath(relpath))
         if local_coordinate:
