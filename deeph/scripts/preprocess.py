@@ -119,7 +119,11 @@ def main():
             interface == 'abacus' and 'OUT.' + abacus_suffix in dirs) or (
             interface == 'siesta' and any(['.HSX' in ifile for ifile in files])) or (
             interface == 'aims' and 'NoTB.dat' in files):
+            
+            if root.count('/') > 1:
+                root = root.split('/')[1]
             relpath_list.append(root)
+            
             abspath_list.append(os.path.abspath(root))
 
     os.makedirs(processed_dir, exist_ok=True)
